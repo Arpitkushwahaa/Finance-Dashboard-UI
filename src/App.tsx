@@ -37,10 +37,10 @@ function App() {
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value as 'admin' | 'viewer')}
-                  className="bg-transparent text-sm font-medium focus:outline-none cursor-pointer text-foreground"
+                  className="bg-background text-sm font-medium focus:outline-none cursor-pointer text-foreground rounded-md px-1"
                 >
-                  <option className="dark:bg-slate-900 dark:text-white bg-white text-black" value="viewer">Viewer</option>
-                  <option className="dark:bg-slate-900 dark:text-white bg-white text-black" value="admin">Admin</option>
+                  <option className="bg-background text-foreground" value="viewer">Viewer</option>
+                  <option className="bg-background text-foreground" value="admin">Admin</option>
                 </select>
               </div>
               

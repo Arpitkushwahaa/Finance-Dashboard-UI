@@ -1,29 +1,71 @@
 import React, { useState } from 'react';
 import { useStore, TransactionType } from '../store/useStore';
-import { ArrowUpRight, ArrowDownRight, Search, Filter, Trash2 } from 'lucide-react';
+import { ArrowUpRight, ArrowDownRight, Search, Filter, Trash2, Plus, Download } from 'lucide-react';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 
 export function TransactionsList() {
-  const { transactions, role, deleteTransaction } = useStore();
+  const { transactions, role, deleteTransaction, addTransaction } = useStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState<TransactionType | 'all'>('all');
   const [sortBy, setSortBy] = useState<'date' | 'amount'>('date');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newTxn, setNewTxn] = useState({ category: '', amount: '', date: format(new Date(), 'yyyy-MM-dd'), type: 'expense' as TransactionType });
 
   const filteredData = transactions.filter(t => {
     const matchesSearch = t.category.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilter = filterType === 'all' || t.type === 'filterType';
+    const matchesFilter = filterType === 'all' || t.type === filterType;
     return matchesSearch && matchesFilter;
   }).sort((a, b) => {
     if (sortBy === 'date') return new Date(b.date).getTime() - new Date(a.date).getTime();
     return b.amount - a.amount;
   });
 
+  const handleExport = () => {
+    const csvContent = [
+      ['Date', 'Category', 'Type', 'Amount'],
+      ...filteredData.map(t => [t.date, t.category, t.type, t.amount])
+    ].map(e => e.join(",")).join("\n");
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "transactions.csv");
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleAddSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newTxn.category || !newTxn.amount) return;
+    addTransaction({
+      category: newTxn.category,
+      amount: Number(newTxn.amount),
+      date: newTxn.date,
+      type: newTxn.type
+    });
+    setIsModalOpen(false);
+    setNewTxn({ category: '', amount: '', date: format(new Date(), 'yyyy-MM-dd'), type: 'expense' });
+  };
+
   return (
     <div className="bg-card border rounded-xl shadow-sm mt-8">
-      <div className="p-6 border-b flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h3 className="text-lg font-semibold">Recent Transactions</h3>
-        <div className="flex gap-4 w-full sm:w-auto">
+      <div className="p-6 border-b flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="flex items-center gap-4 w-full md:w-auto">
+          <h3 className="text-lg font-semibold flex-shrink-0">Recent Transactions</h3>
+          {role === 'admin' && (
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="flex items-center gap-2 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm hover:bg-primary/90 transition-colors"
+            >
+              <Plus className="w-4 h-4" /> Add
+            </button>
+          )}
+        </div>
+        <div className="flex flex-wrap gap-4 w-full md:w-auto">
           <div className="relative flex-1 sm:w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
@@ -51,6 +93,13 @@ export function TransactionsList() {
             <option value="date">Sort by Date</option>
             <option value="amount">Sort by Amount</option>
           </select>
+          <button 
+            onClick={handleExport}
+            className="flex items-center gap-2 p-2 border rounded-lg hover:bg-muted transition-colors text-sm"
+            title="Export to CSV"
+          >
+            <Download className="w-4 h-4" />
+          </button>
         </div>
       </div>
       
@@ -105,6 +154,88 @@ export function TransactionsList() {
           </table>
         </div>
       </div>
+
+      {/* Add Transaction Modal */}
+      {isModalOpen && role === 'admin' && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="bg-card w-full max-w-md rounded-xl shadow-xl p-6 relative">
+            <h2 className="text-xl font-bold mb-6">Add Transaction</h2>
+            <form onSubmit={handleAddSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Category / Name</label>
+                <input 
+                  type="text" required 
+                  value={newTxn.category} 
+                  onChange={e => setNewTxn({...newTxn, category: e.target.value})} 
+                  className="w-full px-4 py-2 border bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
+                  placeholder="e.g. Groceries"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                 <div>
+                    <label className="block text-sm font-medium mb-1">Amount</label>
+                    <input 
+                      type="number" required min="0" step="0.01"
+                      value={newTxn.amount} 
+                      onChange={e => setNewTxn({...newTxn, amount: e.target.value})} 
+                      className="w-full px-4 py-2 border bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
+                      placeholder="0.00"
+                    />
+                 </div>
+                 <div>
+                    <label className="block text-sm font-medium mb-1">Date</label>
+                    <input 
+                      type="date" required 
+                      value={newTxn.date} 
+                      onChange={e => setNewTxn({...newTxn, date: e.target.value})} 
+                      className="w-full px-4 py-2 border bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
+                    />
+                 </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Type</label>
+                <div className="flex gap-4">
+                  <label className="flex items-center gap-2">
+                    <input 
+                      type="radio" name="type" value="expense"
+                      checked={newTxn.type === 'expense'}
+                      onChange={e => setNewTxn({...newTxn, type: e.target.value as TransactionType})}
+                      className="accent-primary"
+                    />
+                    Expense
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input 
+                      type="radio" name="type" value="income"
+                      checked={newTxn.type === 'income'}
+                      onChange={e => setNewTxn({...newTxn, type: e.target.value as TransactionType})}
+                      className="accent-primary"
+                    />
+                    Income
+                  </label>
+                </div>
+              </div>
+              
+              <div className="pt-4 flex justify-end gap-3">
+                <button 
+                  type="button" 
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-4 py-2 text-sm font-medium hover:bg-muted rounded-lg transition-colors border"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit"
+                  className="px-4 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export type Role = 'viewer' | 'admin';
 export type TransactionType = 'income' | 'expense';
@@ -32,16 +33,23 @@ interface AppState {
   toggleDarkMode: () => void;
 }
 
-export const useStore = create<AppState>((set) => ({
-  role: 'viewer',
-  setRole: (role) => set({ role }),
-  transactions: MOCK_TRANSACTIONS,
-  addTransaction: (txn) => set((state) => ({
-    transactions: [{ ...txn, id: Math.random().toString(36).substr(2, 9) }, ...state.transactions]
-  })),
-  deleteTransaction: (id) => set((state) => ({
-    transactions: state.transactions.filter(t => t.id !== id)
-  })),
-  darkMode: false,
-  toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode }))
-}));
+export const useStore = create<AppState>()(
+  persist(
+    (set) => ({
+      role: 'viewer',
+      setRole: (role) => set({ role }),
+      transactions: MOCK_TRANSACTIONS,
+      addTransaction: (txn) => set((state) => ({
+        transactions: [{ ...txn, id: Math.random().toString(36).substr(2, 9) }, ...state.transactions]
+      })),
+      deleteTransaction: (id) => set((state) => ({
+        transactions: state.transactions.filter(t => t.id !== id)
+      })),
+      darkMode: false,
+      toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode }))
+    }),
+    {
+      name: 'finance-dashboard-storage',
+    }
+  )
+);

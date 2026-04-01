@@ -32,15 +32,15 @@ function App() {
             </div>
             
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-muted dark:bg-slate-800 rounded-full">
-                <Shield className="w-4 h-4 text-muted-foreground dark:text-slate-400" />
-                <select 
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full">
+                <Shield className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+                <select
                   value={role}
                   onChange={(e) => setRole(e.target.value as 'admin' | 'viewer')}
-                  className="bg-transparent text-sm font-medium focus:outline-none cursor-pointer text-foreground dark:text-white"
+                  className="bg-transparent text-sm font-medium focus:outline-none cursor-pointer text-slate-900 dark:text-slate-100"
                 >
-                  <option className="bg-background dark:bg-slate-900 text-foreground dark:text-white" value="viewer">Viewer</option>
-                  <option className="bg-background dark:bg-slate-900 text-foreground dark:text-white" value="admin">Admin</option>
+                  <option className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100" value="viewer">Viewer</option>
+                  <option className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100" value="admin">Admin</option>
                 </select>
               </div>
               

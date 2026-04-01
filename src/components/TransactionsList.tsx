@@ -71,13 +71,13 @@ export function TransactionsList() {
             <input
               type="text"
               placeholder="Search category..."
-              className="w-full pl-9 pr-4 py-2 bg-background border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full pl-9 pr-4 py-2 bg-background border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-muted-foreground"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <select
-            className="px-4 py-2 bg-background border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            className="px-4 py-2 bg-background border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
             value={filterType}
             onChange={(e) => setFilterType(e.target.value as any)}
           >
@@ -86,7 +86,7 @@ export function TransactionsList() {
             <option value="expense">Expense</option>
           </select>
           <select
-            className="px-4 py-2 bg-background border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            className="px-4 py-2 bg-background border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as 'date' | 'amount')}
           >
@@ -167,7 +167,7 @@ export function TransactionsList() {
                   type="text" required 
                   value={newTxn.category} 
                   onChange={e => setNewTxn({...newTxn, category: e.target.value})} 
-                  className="w-full px-4 py-2 border bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
+                  className="w-full px-4 py-2 border bg-background text-foreground placeholder:text-muted-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
                   placeholder="e.g. Groceries"
                 />
               </div>
@@ -178,7 +178,7 @@ export function TransactionsList() {
                       type="number" required min="0" step="0.01"
                       value={newTxn.amount} 
                       onChange={e => setNewTxn({...newTxn, amount: e.target.value})} 
-                      className="w-full px-4 py-2 border bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
+                      className="w-full px-4 py-2 border bg-background text-foreground placeholder:text-muted-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
                       placeholder="0.00"
                     />
                  </div>
@@ -188,7 +188,7 @@ export function TransactionsList() {
                       type="date" required 
                       value={newTxn.date} 
                       onChange={e => setNewTxn({...newTxn, date: e.target.value})} 
-                      className="w-full px-4 py-2 border bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
+                      className="w-full px-4 py-2 border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
                     />
                  </div>
               </div>

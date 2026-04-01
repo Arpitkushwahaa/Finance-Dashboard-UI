@@ -67,31 +67,31 @@ export function TransactionsList() {
         </div>
         <div className="flex flex-wrap gap-4 w-full md:w-auto">
           <div className="relative flex-1 sm:w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground dark:text-slate-400" />
             <input
               type="text"
               placeholder="Search category..."
-              className="w-full pl-9 pr-4 py-2 bg-background border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-muted-foreground"
+              className="w-full pl-9 pr-4 py-2 bg-background dark:bg-slate-800 border dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground dark:text-white placeholder:text-muted-foreground dark:placeholder:text-slate-400"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <select
-            className="px-4 py-2 bg-background border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+            className="px-4 py-2 bg-background dark:bg-slate-800 border dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground dark:text-white"
             value={filterType}
             onChange={(e) => setFilterType(e.target.value as any)}
           >
-            <option value="all">All Types</option>
-            <option value="income">Income</option>
-            <option value="expense">Expense</option>
+            <option className="bg-background dark:bg-slate-800 text-foreground dark:text-white" value="all">All Types</option>
+            <option className="bg-background dark:bg-slate-800 text-foreground dark:text-white" value="income">Income</option>
+            <option className="bg-background dark:bg-slate-800 text-foreground dark:text-white" value="expense">Expense</option>
           </select>
           <select
-            className="px-4 py-2 bg-background border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+            className="px-4 py-2 bg-background dark:bg-slate-800 border dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground dark:text-white"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as 'date' | 'amount')}
           >
-            <option value="date">Sort by Date</option>
-            <option value="amount">Sort by Amount</option>
+            <option className="bg-background dark:bg-slate-800 text-foreground dark:text-white" value="date">Sort by Date</option>
+            <option className="bg-background dark:bg-slate-800 text-foreground dark:text-white" value="amount">Sort by Amount</option>
           </select>
           <button 
             onClick={handleExport}
@@ -167,7 +167,7 @@ export function TransactionsList() {
                   type="text" required 
                   value={newTxn.category} 
                   onChange={e => setNewTxn({...newTxn, category: e.target.value})} 
-                  className="w-full px-4 py-2 border bg-background text-foreground placeholder:text-muted-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
+                  className="w-full px-4 py-2 border dark:border-slate-700 bg-background dark:bg-slate-800 text-foreground dark:text-white placeholder:text-muted-foreground dark:placeholder:text-slate-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
                   placeholder="e.g. Groceries"
                 />
               </div>
@@ -178,7 +178,7 @@ export function TransactionsList() {
                       type="number" required min="0" step="0.01"
                       value={newTxn.amount} 
                       onChange={e => setNewTxn({...newTxn, amount: e.target.value})} 
-                      className="w-full px-4 py-2 border bg-background text-foreground placeholder:text-muted-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
+                      className="w-full px-4 py-2 border dark:border-slate-700 bg-background dark:bg-slate-800 text-foreground dark:text-white placeholder:text-muted-foreground dark:placeholder:text-slate-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
                       placeholder="0.00"
                     />
                  </div>
@@ -188,7 +188,7 @@ export function TransactionsList() {
                       type="date" required 
                       value={newTxn.date} 
                       onChange={e => setNewTxn({...newTxn, date: e.target.value})} 
-                      className="w-full px-4 py-2 border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
+                      className="w-full px-4 py-2 border dark:border-slate-700 bg-background dark:bg-slate-800 text-foreground dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" 
                     />
                  </div>
               </div>

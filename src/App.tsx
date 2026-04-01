@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useStore } from './store/useStore';
 import { Moon, Sun, Shield, LayoutDashboard } from 'lucide-react';
 import { DashboardOverview } from './components/DashboardOverview';

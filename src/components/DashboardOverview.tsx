@@ -1,6 +1,5 @@
-import React from 'react';
 import { useStore } from '../store/useStore';
-import { DollarSign, ArrowUpRight, ArrowDownRight, Activity } from 'lucide-react';
+import { DollarSign, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
@@ -88,7 +87,7 @@ export function DashboardOverview() {
              <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie data={expensesByCategory} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
-                  {expensesByCategory.map((entry, index) => (
+                  {expensesByCategory.map((_entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>

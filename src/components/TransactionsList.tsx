@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStore, TransactionType } from '../store/useStore';
-import { ArrowUpRight, ArrowDownRight, Search, Filter, Trash2, Plus, Download } from 'lucide-react';
+import { ArrowUpRight, ArrowDownRight, Search, Trash2, Plus, Download } from 'lucide-react';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 
